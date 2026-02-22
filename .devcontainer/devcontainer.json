@@ -1,0 +1,18 @@
+{
+  "name": "Fla Calendar Sync",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "drizzle-team.drizzle-extension",
+        "YoavBls.pretty-ts-errors"
+      ]
+    }
+  },
+  "remoteUser": "node"
+}
