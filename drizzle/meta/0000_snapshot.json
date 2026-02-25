@@ -1,5 +1,5 @@
 {
-  "id": "cf6b6777-7737-4cb8-be58-9e67da5a4897",
+  "id": "a59dd161-aa86-4b44-bc57-ec0c9d72275f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -88,7 +88,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -134,7 +134,7 @@
       "columns": {
         "subscriberId": {
           "name": "subscriberId",
-          "type": "varchar(255)",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },

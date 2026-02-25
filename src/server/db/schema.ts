@@ -21,7 +21,7 @@ export const createTable = pgTableCreator((name) => `fla_sync_${name}`);
 //* TABELAS DE INSCRIÇÃO E TOKENS
 
 export const subscribers = createTable("subscriber", {
-  id: varchar("id", { length: 26 }).primaryKey(),
+  id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   refresh_token: text("refresh_token").notNull(),
   created_at: timestamp("created_at")
@@ -50,7 +50,7 @@ export const matches = createTable("match", {
 export const userMatches = createTable(
   "user_match",
   {
-    subscriberId: varchar("subscriberId", { length: 255 })
+    subscriberId: serial("subscriberId")
       .notNull()
       .references(() => subscribers.id, { onDelete: "cascade" }),
     matchId: integer("matchId")

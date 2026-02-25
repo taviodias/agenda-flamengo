@@ -12,7 +12,7 @@ CREATE TABLE "fla_sync_match" (
 );
 --> statement-breakpoint
 CREATE TABLE "fla_sync_subscriber" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"refresh_token" text NOT NULL,
 	"created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE "fla_sync_subscriber" (
 );
 --> statement-breakpoint
 CREATE TABLE "fla_sync_user_match" (
-	"subscriberId" varchar(255) NOT NULL,
+	"subscriberId" serial NOT NULL,
 	"matchId" integer NOT NULL,
 	"googleEventId" varchar(255) NOT NULL,
 	CONSTRAINT "fla_sync_user_match_subscriberId_matchId_pk" PRIMARY KEY("subscriberId","matchId")
