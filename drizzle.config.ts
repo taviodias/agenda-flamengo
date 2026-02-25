@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: ["workspace_*"],
+  tablesFilter: ["fla_sync_*"],
 } satisfies Config;
