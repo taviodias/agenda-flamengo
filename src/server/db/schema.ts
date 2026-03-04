@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  json,
   pgTableCreator,
   primaryKey,
   serial,
@@ -39,6 +40,7 @@ export const matches = createTable("match", {
   is_home: boolean("is_home").notNull().default(true),
   match_date: timestamp("match_date", { mode: "date" }),
   status: varchar("status", { enum: ["FINISHED", "SCHEDULED"] }).notNull(),
+  scoreboard: json("scoreboard").$type<{ home: number; away: number }>(),
   created_at: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
