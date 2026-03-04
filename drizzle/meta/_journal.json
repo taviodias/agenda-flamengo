@@ -8,6 +8,13 @@
       "when": 1772020818836,
       "tag": "0000_breezy_deadpool",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772589360738,
+      "tag": "0001_cuddly_rick_jones",
+      "breakpoints": true
     }
   ]
 }

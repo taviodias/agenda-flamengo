@@ -33,12 +33,12 @@ export const subscribers = createTable("subscriber", {
 
 export const matches = createTable("match", {
   id: serial("id").primaryKey(),
-  api_id: integer("api_id").notNull().unique(),
+  api_id: varchar("api_id", { length: 255 }).notNull().unique(),
   opponent: varchar("opponent", { length: 255 }).notNull(),
   competition: varchar("competition", { length: 255 }).notNull(),
   is_home: boolean("is_home").notNull().default(true),
   match_date: timestamp("match_date", { mode: "date" }),
-  status: varchar("status", { length: 50 }).notNull(),
+  status: varchar("status", { enum: ["FINISHED", "SCHEDULED"] }).notNull(),
   created_at: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
