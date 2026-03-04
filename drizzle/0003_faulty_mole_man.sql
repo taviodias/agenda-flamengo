@@ -1,0 +1,1 @@
+ALTER TABLE "fla_sync_match" ALTER COLUMN "match_date" SET NOT NULL;

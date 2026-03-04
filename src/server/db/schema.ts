@@ -38,7 +38,7 @@ export const matches = createTable("match", {
   opponent: varchar("opponent", { length: 255 }).notNull(),
   competition: varchar("competition", { length: 255 }).notNull(),
   is_home: boolean("is_home").notNull().default(true),
-  match_date: timestamp("match_date", { mode: "date" }),
+  match_date: timestamp("match_date", { mode: "date" }).notNull(),
   status: varchar("status", { enum: ["FINISHED", "SCHEDULED"] }).notNull(),
   scoreboard: json("scoreboard").$type<{ home: number; away: number }>(),
   created_at: timestamp("created_at")
