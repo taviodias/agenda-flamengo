@@ -1,0 +1,1 @@
+ALTER TABLE "fla_sync_match" ADD COLUMN "opponent_shield" varchar(255) NOT NULL;
