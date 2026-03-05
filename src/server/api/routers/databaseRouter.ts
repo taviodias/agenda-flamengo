@@ -3,7 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { MatchSchema } from "../validations";
 import { db } from "~/server/db";
 import { matches } from "~/server/db/schema";
-import { and, eq, notInArray } from "drizzle-orm";
+import { and, asc, eq, notInArray } from "drizzle-orm";
 
 export const database = createTRPCRouter({
   upsert: publicProcedure
@@ -47,4 +47,16 @@ export const database = createTRPCRouter({
           );
       }
     }),
+  matchesCards: publicProcedure.query(async () => {
+    const pastMatches = await db.query.matches.findMany({
+      where: eq(matches.status, "FINISHED"),
+      orderBy: asc(matches.match_date),
+    });
+    const nextMatches = await db.query.matches.findMany({
+      where: eq(matches.status, "SCHEDULED"),
+      orderBy: asc(matches.match_date),
+      limit: 3,
+    });
+    return [...pastMatches, ...nextMatches];
+  }),
 });
