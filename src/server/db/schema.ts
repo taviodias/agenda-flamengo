@@ -10,6 +10,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+import type { Scoreboard } from "~/types";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -40,7 +41,7 @@ export const matches = createTable("match", {
   is_home: boolean("is_home").notNull().default(true),
   match_date: timestamp("match_date", { mode: "date" }).notNull(),
   status: varchar("status", { enum: ["FINISHED", "SCHEDULED"] }).notNull(),
-  scoreboard: json("scoreboard").$type<{ home: number; away: number }>(),
+  scoreboard: json("scoreboard").$type<Scoreboard>(),
   created_at: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
