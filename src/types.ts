@@ -3,6 +3,7 @@ export type Match = {
   competition: string;
   matchDate: Date;
   opponent: string;
+  opponentShield: string;
   isHome: boolean;
   status: string;
   scoreboard?: Scoreboard;

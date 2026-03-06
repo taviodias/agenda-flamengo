@@ -5,6 +5,7 @@ export const MatchSchema = z.object({
   competition: z.string(),
   matchDate: z.date(),
   opponent: z.string(),
+  opponentShield: z.string(),
   isHome: z.boolean(),
   status: z.string(),
   scoreboard: z

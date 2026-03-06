@@ -83,6 +83,10 @@ async function nextMatches() {
     const homeTeam = $match.find(".match__lg_card--ht-name").text();
     const awayTeam = $match.find(".match__lg_card--at-name").text();
     const isHome = homeTeam === "Flamengo";
+    const opponentShield =
+      $match
+        .find(`.match__lg_card--${isHome ? "at" : "ht"}-logo img`)
+        .attr("src") ?? "";
     const opponent = isHome ? awayTeam : homeTeam;
     const matchDate = parseDate(date, time);
     const apiId = Buffer.from(`${opponent}-${matchDate.getTime()}`).toString(
@@ -93,6 +97,7 @@ async function nextMatches() {
       competition,
       matchDate,
       opponent,
+      opponentShield,
       isHome,
       status: "SCHEDULED",
     });
@@ -125,6 +130,10 @@ async function lastTwoMatches() {
       const homeTeam = $match.find(".match__lg_card--ht-name").text();
       const awayTeam = $match.find(".match__lg_card--at-name").text();
       const isHome = homeTeam === "Flamengo";
+      const opponentShield =
+        $match
+          .find(`.match__lg_card--${isHome ? "at" : "ht"}-logo img`)
+          .attr("src") ?? "";
       const opponent = isHome ? awayTeam : homeTeam;
       const matchDate = parseDate(date);
       const apiId = Buffer.from(`${opponent}-${matchDate.getTime()}`).toString(
@@ -135,6 +144,7 @@ async function lastTwoMatches() {
         competition,
         matchDate,
         opponent,
+        opponentShield,
         isHome,
         status: "FINISHED",
         scoreboard: {

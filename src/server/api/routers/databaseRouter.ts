@@ -17,6 +17,7 @@ export const database = createTRPCRouter({
             competition: match.competition,
             match_date: match.matchDate,
             opponent: match.opponent,
+            opponent_shield: match.opponentShield,
             is_home: match.isHome,
             status: match.status as "SCHEDULED" | "FINISHED",
             scoreboard: match.scoreboard,
