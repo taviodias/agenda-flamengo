@@ -1,0 +1,1 @@
+ALTER TABLE "fla_sync_match" ADD COLUMN "location" varchar(255);

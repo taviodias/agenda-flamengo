@@ -43,6 +43,7 @@ export const matches = createTable("match", {
   match_date: timestamp("match_date", { mode: "date" }).notNull(),
   status: varchar("status", { enum: ["FINISHED", "SCHEDULED"] }).notNull(),
   scoreboard: json("scoreboard").$type<Scoreboard>(),
+  location: varchar("location", { length: 255 }),
   created_at: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

@@ -6,6 +6,7 @@ export type Match = {
   opponentShield: string;
   isHome: boolean;
   status: string;
+  location: string | null;
   scoreboard: Scoreboard | null;
 };
 

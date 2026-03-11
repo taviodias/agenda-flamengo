@@ -8,6 +8,7 @@ export const MatchSchema = z.object({
   opponentShield: z.string(),
   isHome: z.boolean(),
   status: z.string(),
+  location: z.string().nullable(),
   scoreboard: z
     .object({
       home: z.number(),
