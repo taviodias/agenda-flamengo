@@ -138,12 +138,14 @@ export function MatchCard({ match, variant }: MatchCardProps) {
           <Calendar className={cn(isCenter ? "h-4 w-4" : "h-3 w-3")} />
           <span className={cn(isCenter ? "text-sm" : "text-xs")}>{day}</span>
         </div>
-        <div className="text-muted-foreground flex items-center gap-1.5">
-          <MapPin className={cn(isCenter ? "h-4 w-4" : "h-3 w-3")} />
-          <span className={cn(isCenter ? "text-sm" : "text-xs")}>
-            Estádio Ciudad de Lanús
-          </span>
-        </div>
+        {match.location && (
+          <div className="text-muted-foreground flex items-center gap-1.5">
+            <MapPin className={cn(isCenter ? "h-4 w-4" : "h-3 w-3")} />
+            <span className={cn(isCenter ? "text-sm" : "text-xs")}>
+              {match.location}
+            </span>
+          </div>
+        )}
         {!isPast && (
           <div className="text-muted-foreground flex items-center gap-1.5">
             <Clock className={cn(isCenter ? "h-4 w-4" : "h-3 w-3")} />

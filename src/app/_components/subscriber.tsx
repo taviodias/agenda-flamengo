@@ -34,8 +34,8 @@ export function Subscriber() {
             Receba os jogos no seu calendario
           </h2>
           <p className="text-muted-foreground max-w-md text-sm">
-            Autorize para sincronizar automaticamente todos os jogos do Flamengo
-            com o seu Google Calendar. Nunca mais perca um jogo!
+            Autorize para sincronizar automaticamente os próximos jogos do
+            Flamengo com o seu Google Calendar. Nunca mais perca um jogo!
           </p>
         </div>
         <div className="flex w-full justify-center">

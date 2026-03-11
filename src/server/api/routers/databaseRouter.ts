@@ -21,12 +21,14 @@ export const database = createTRPCRouter({
             is_home: match.isHome,
             status: match.status as "SCHEDULED" | "FINISHED",
             scoreboard: match.scoreboard,
+            location: match.location,
           })
           .onConflictDoUpdate({
             target: matches.api_id,
             set: {
               match_date: match.matchDate,
               status: match.status as "SCHEDULED" | "FINISHED",
+              location: match.location,
               scoreboard: match.scoreboard,
               updated_at: new Date(),
             },
@@ -59,6 +61,7 @@ export const database = createTRPCRouter({
         isHome: matches.is_home,
         status: matches.status,
         scoreboard: matches.scoreboard,
+        location: matches.location,
       })
       .from(matches)
       .where(eq(matches.status, "FINISHED"))
@@ -73,6 +76,7 @@ export const database = createTRPCRouter({
         isHome: matches.is_home,
         status: matches.status,
         scoreboard: matches.scoreboard,
+        location: matches.location,
       })
       .from(matches)
       .where(eq(matches.status, "SCHEDULED"))
