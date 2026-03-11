@@ -49,15 +49,35 @@ export const database = createTRPCRouter({
       }
     }),
   matchesCards: publicProcedure.query(async () => {
-    const pastMatches = await db.query.matches.findMany({
-      where: eq(matches.status, "FINISHED"),
-      orderBy: asc(matches.match_date),
-    });
-    const nextMatches = await db.query.matches.findMany({
-      where: eq(matches.status, "SCHEDULED"),
-      orderBy: asc(matches.match_date),
-      limit: 3,
-    });
+    const pastMatches = await db
+      .select({
+        apiId: matches.api_id,
+        competition: matches.competition,
+        matchDate: matches.match_date,
+        opponent: matches.opponent,
+        opponentShield: matches.opponent_shield,
+        isHome: matches.is_home,
+        status: matches.status,
+        scoreboard: matches.scoreboard,
+      })
+      .from(matches)
+      .where(eq(matches.status, "FINISHED"))
+      .orderBy(asc(matches.match_date));
+    const nextMatches = await db
+      .select({
+        apiId: matches.api_id,
+        competition: matches.competition,
+        matchDate: matches.match_date,
+        opponent: matches.opponent,
+        opponentShield: matches.opponent_shield,
+        isHome: matches.is_home,
+        status: matches.status,
+        scoreboard: matches.scoreboard,
+      })
+      .from(matches)
+      .where(eq(matches.status, "SCHEDULED"))
+      .orderBy(asc(matches.match_date))
+      .limit(3);
     return [...pastMatches, ...nextMatches];
   }),
 });
