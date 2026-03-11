@@ -12,6 +12,12 @@ export const MatchSchema = z.object({
     .object({
       home: z.number(),
       away: z.number(),
+      penalties: z
+        .object({
+          home: z.number(),
+          away: z.number(),
+        })
+        .nullable(),
     })
-    .optional(),
+    .nullable(),
 });

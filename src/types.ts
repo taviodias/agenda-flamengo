@@ -6,7 +6,14 @@ export type Match = {
   opponentShield: string;
   isHome: boolean;
   status: string;
-  scoreboard?: Scoreboard;
+  scoreboard: Scoreboard | null;
 };
 
-export type Scoreboard = { home: number; away: number };
+export type Scoreboard = {
+  home: number;
+  away: number;
+  penalties: {
+    home: number;
+    away: number;
+  } | null;
+};
