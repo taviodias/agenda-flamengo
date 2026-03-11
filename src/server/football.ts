@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { api } from "~/trpc/server";
-import type { Match } from "~/types";
+import type { Match, Scoreboard } from "~/types";
 
 const PLACAR_FLAMENGO_BASE_URL =
   "https://www.placardefutebol.com.br/time/flamengo";
@@ -54,12 +54,24 @@ function parseDate(date: string, time?: string) {
   if (!day || !month) {
     throw new Error("Data em formato inválido.");
   }
-  if (month - 1 < now.getMonth()) {
-    matchDate.setFullYear(now.getFullYear() + 1);
-  }
   matchDate.setDate(day);
   matchDate.setMonth(month - 1);
+  if (matchDate.getMonth() < now.getMonth()) {
+    matchDate.setFullYear(now.getFullYear() + 1);
+  }
   return matchDate;
+}
+
+function parseScoreboard(scores: number[]): Scoreboard {
+  const [home, away, penHome, penAway] = scores;
+  return {
+    home: home ?? 0,
+    away: away ?? 0,
+    penalties:
+      penHome !== undefined && penAway !== undefined
+        ? { home: penHome, away: penAway }
+        : null,
+  };
 }
 
 async function nextMatches() {
@@ -89,9 +101,9 @@ async function nextMatches() {
         .attr("src") ?? "";
     const opponent = isHome ? awayTeam : homeTeam;
     const matchDate = parseDate(date, time);
-    const apiId = Buffer.from(`${opponent}-${matchDate.getTime()}`).toString(
-      "base64",
-    );
+    const apiId = Buffer.from(
+      `${opponent}-${matchDate.getDate()}/${matchDate.getMonth()}`,
+    ).toString("base64");
     matches.push({
       apiId,
       competition,
@@ -100,6 +112,7 @@ async function nextMatches() {
       opponentShield,
       isHome,
       status: "SCHEDULED",
+      scoreboard: null,
     });
   });
   return matches;
@@ -121,12 +134,13 @@ async function lastTwoMatches() {
         .find(".match__lg_card--scoreboard")
         .text()
         .trim();
-      const date = $match.find(".match__lg_card--date").text();
-      const competition = $match.find(".match__lg_card--league").text();
-      const [hScore, aScore] = scoreBoard.split("-").map(Number);
-      if (typeof hScore !== "number" || typeof aScore !== "number") {
+      const goals = scoreBoard.match(/\d+/g);
+      if (!goals || goals.length < 2) {
         throw new Error("Placar não encontrado ou em formato inválido!");
       }
+      const scoreboard = parseScoreboard(goals.map(Number));
+      const date = $match.find(".match__lg_card--date").text();
+      const competition = $match.find(".match__lg_card--league").text();
       const homeTeam = $match.find(".match__lg_card--ht-name").text();
       const awayTeam = $match.find(".match__lg_card--at-name").text();
       const isHome = homeTeam === "Flamengo";
@@ -136,9 +150,9 @@ async function lastTwoMatches() {
           .attr("src") ?? "";
       const opponent = isHome ? awayTeam : homeTeam;
       const matchDate = parseDate(date);
-      const apiId = Buffer.from(`${opponent}-${matchDate.getTime()}`).toString(
-        "base64",
-      );
+      const apiId = Buffer.from(
+        `${opponent}-${matchDate.getDate()}/${matchDate.getMonth()}`,
+      ).toString("base64");
       matches.push({
         apiId,
         competition,
@@ -147,10 +161,7 @@ async function lastTwoMatches() {
         opponentShield,
         isHome,
         status: "FINISHED",
-        scoreboard: {
-          home: hScore,
-          away: aScore,
-        },
+        scoreboard,
       });
     });
   return matches;
