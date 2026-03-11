@@ -1,12 +1,38 @@
 import { api } from "~/trpc/server";
+import { Header } from "./_components/header";
+import { MatchesCarousel } from "./_components/matches-carousel";
+import { Footer } from "./_components/footer";
+import { Subscriber } from "./_components/subscriber";
 
 export default async function Home() {
   const matches = await api.db.matchesCards();
-  return matches.map((match) => (
-    <h1 key={match.id} className="uppercase">
-      {match.is_home ? "Flamengo" : match.opponent}{" "}
-      {match.scoreboard?.home ?? ""} - {match.scoreboard?.away ?? ""}{" "}
-      {match.is_home ? match.opponent : "Flamengo"}
-    </h1>
-  ));
+  return (
+    <main className="bg-background relative flex min-h-screen flex-col">
+      {/* Background glow effects */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="bg-flamengo-red/5 absolute top-0 left-1/2 h-125 w-200 -translate-x-1/2 rounded-full blur-[120px]" />
+        <div className="bg-flamengo-red/3 absolute bottom-0 left-1/2 h-75 w-150 -translate-x-1/2 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="relative z-10 flex flex-1 flex-col">
+        <Header />
+
+        {/* Section title */}
+        <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-2">
+          <div className="flex items-center justify-center gap-3">
+            <div className="bg-border h-px flex-1" />
+            <span className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
+              Calendário de jogos
+            </span>
+            <div className="bg-border h-px flex-1" />
+          </div>
+        </div>
+
+        <MatchesCarousel matches={matches} />
+        <Subscriber />
+        <div className="flex-1" />
+        <Footer />
+      </div>
+    </main>
+  );
 }
