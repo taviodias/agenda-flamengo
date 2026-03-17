@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import { oauth2Client } from "~/server/google";
-import { db } from "~/server/db";
-import { subscribers } from "~/server/db/schema";
+import { api } from "~/trpc/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -32,16 +31,10 @@ export async function GET(request: Request) {
         new URL("/?error=missing_data", request.url),
       );
     }
-    await db
-      .insert(subscribers)
-      .values({
-        email: email,
-        refresh_token: tokens.refresh_token,
-      })
-      .onConflictDoUpdate({
-        target: subscribers.email,
-        set: { refresh_token: tokens.refresh_token },
-      });
+    await api.db.upsertSubscriber({
+      email,
+      refreshToken: tokens.refresh_token,
+    });
 
     return NextResponse.redirect(new URL("/?success=true", request.url));
   } catch (error) {

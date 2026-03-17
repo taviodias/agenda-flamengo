@@ -2,11 +2,11 @@ import z from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { MatchSchema } from "../validations";
 import { db } from "~/server/db";
-import { matches } from "~/server/db/schema";
-import { and, asc, eq, notInArray } from "drizzle-orm";
+import { matches, subscribers } from "~/server/db/schema";
+import { and, asc, eq, gt, notInArray } from "drizzle-orm";
 
 export const database = createTRPCRouter({
-  upsert: publicProcedure
+  upsertMatch: publicProcedure
     .input(z.array(MatchSchema))
     .mutation(async ({ input }) => {
       for (const match of input) {
@@ -50,6 +50,25 @@ export const database = createTRPCRouter({
           );
       }
     }),
+  upsertSubscriber: publicProcedure
+    .input(
+      z.object({
+        email: z.string(),
+        refreshToken: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db
+        .insert(subscribers)
+        .values({
+          email: input.email,
+          refresh_token: input.refreshToken,
+        })
+        .onConflictDoUpdate({
+          target: subscribers.email,
+          set: { refresh_token: input.refreshToken },
+        });
+    }),
   matchesCards: publicProcedure.query(async () => {
     const pastMatches = await db
       .select({
@@ -83,5 +102,29 @@ export const database = createTRPCRouter({
       .orderBy(asc(matches.match_date))
       .limit(3);
     return [...pastMatches, ...nextMatches];
+  }),
+  upcomingMatches: publicProcedure.query(async () => {
+    const now = new Date();
+    now.setHours(now.getHours() - 3); //GMT -3
+    const upcoming = await db
+      .select({
+        id: matches.id,
+        apiId: matches.api_id,
+        competition: matches.competition,
+        matchDate: matches.match_date,
+        opponent: matches.opponent,
+        opponentShield: matches.opponent_shield,
+        isHome: matches.is_home,
+        status: matches.status,
+        scoreboard: matches.scoreboard,
+        location: matches.location,
+      })
+      .from(matches)
+      .where(gt(matches.match_date, now));
+    return upcoming;
+  }),
+  getSubscribers: publicProcedure.query(async () => {
+    const subscribers = await db.query.subscribers.findMany();
+    return subscribers;
   }),
 });

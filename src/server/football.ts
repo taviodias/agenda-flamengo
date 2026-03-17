@@ -191,7 +191,7 @@ export async function syncFlamengoMatches() {
   const l2m = await lastTwoMatches();
   const nm = await nextMatches();
   console.log("Upsert no Supabase...");
-  await api.db.upsert([...l2m, ...nm]);
+  await api.db.upsertMatch([...l2m, ...nm]);
   console.log("Sync dos jogos concluído!");
   console.log("Limpando jogos antigos...");
   await api.db.cleanOldMatches(l2m);
