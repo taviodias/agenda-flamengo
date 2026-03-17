@@ -58,7 +58,7 @@ export const database = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      await db
+      const subsInserted = await db
         .insert(subscribers)
         .values({
           email: input.email,
@@ -67,7 +67,9 @@ export const database = createTRPCRouter({
         .onConflictDoUpdate({
           target: subscribers.email,
           set: { refresh_token: input.refreshToken },
-        });
+        })
+        .returning();
+      return subsInserted[0];
     }),
   matchesCards: publicProcedure.query(async () => {
     const pastMatches = await db

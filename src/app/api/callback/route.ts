@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import { oauth2Client } from "~/server/google";
 import { api } from "~/trpc/server";
+import { syncUserCalendar } from "~/server/calendar";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -31,10 +32,20 @@ export async function GET(request: Request) {
         new URL("/?error=missing_data", request.url),
       );
     }
-    await api.db.upsertSubscriber({
+    const subscriber = await api.db.upsertSubscriber({
       email,
       refreshToken: tokens.refresh_token,
     });
+    if (!subscriber) {
+      throw new Error("Subscriber não salvo no banco de dados.");
+    }
+
+    const upcomingMatches = await api.db.upcomingMatches();
+    await syncUserCalendar(
+      subscriber.refresh_token,
+      subscriber.id,
+      upcomingMatches,
+    );
 
     return NextResponse.redirect(new URL("/?success=true", request.url));
   } catch (error) {
