@@ -12,6 +12,7 @@ export function MatchCard({ match, variant }: MatchCardProps) {
   const isCenter = variant === "center";
   const isPast = match.status === "FINISHED";
   const { day, time } = formatDate(match.matchDate);
+  const opponentShield = match.opponentShield ?? "/no_shield.png";
 
   return (
     <div
@@ -58,13 +59,18 @@ export function MatchCard({ match, variant }: MatchCardProps) {
       )}
 
       {/* Teams */}
-      <div className="flex w-full flex-1 items-center justify-center gap-4">
+      <div
+        className={cn(
+          "flex w-full flex-1 items-center justify-center",
+          isPast ? "gap-3" : "gap-5",
+        )}
+      >
         {/* Home team */}
         <div className="flex flex-col items-center gap-2">
           <img
-            src={match.isHome ? "/flamengo.svg" : match.opponentShield}
+            src={match.isHome ? "/flamengo.svg" : opponentShield}
             alt="home logo"
-            className={cn(isCenter ? "h-16 max-w-16" : "h-12 max-w-12")}
+            className={cn(isCenter ? "h-16" : "h-12")}
           />
           <span
             className={cn(
@@ -117,9 +123,9 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         {/* Away team */}
         <div className="flex flex-col items-center gap-2">
           <img
-            src={match.isHome ? match.opponentShield : "/flamengo.svg"}
+            src={match.isHome ? opponentShield : "/flamengo.svg"}
             alt="away logo"
-            className={cn(isCenter ? "h-16 max-w-16" : "h-12 max-w-12")}
+            className={cn(isCenter ? "h-16" : "h-12")}
           />
           <span
             className={cn(
