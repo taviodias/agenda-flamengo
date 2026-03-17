@@ -1,5 +1,5 @@
 import { CalendarPlus } from "lucide-react";
-import Link from "next/link";
+import { SubscribeButton } from "./subscribe-button";
 
 export function Subscriber() {
   return (
@@ -18,13 +18,7 @@ export function Subscriber() {
           </p>
         </div>
         <div className="flex w-full justify-center">
-          <Link
-            className="bg-flamengo-red text-primary-foreground hover:bg-flamengo-dark-red focus:ring-flamengo-red/50 inline-flex h-12 items-center justify-center gap-2 self-center rounded-lg px-6 text-sm font-semibold transition-colors hover:cursor-pointer focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            href="/api/subscribe"
-          >
-            <CalendarPlus className="h-4 w-4" />
-            Sincronizar agenda
-          </Link>
+          <SubscribeButton />
         </div>
       </div>
     </section>
