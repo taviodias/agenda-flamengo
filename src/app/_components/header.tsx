@@ -7,9 +7,8 @@ export function Header() {
         <Image
           src="/logo_agenda_flamengo.png"
           alt="Escudo do Flamengo"
+          fill
           priority
-          width={115}
-          height={120}
         />
       </div>
       <div className="text-center">
