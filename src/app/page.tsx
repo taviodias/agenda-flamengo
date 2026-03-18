@@ -3,6 +3,8 @@ import { Header } from "./_components/header";
 import { MatchesCarousel } from "./_components/matches-carousel";
 import { Footer } from "./_components/footer";
 import { Subscriber } from "./_components/subscriber";
+import { SubscriptionToast } from "./_components/subscription-toast";
+import { Suspense } from "react";
 
 export default async function Home() {
   const matches = await api.db.matchesCards();
@@ -30,9 +32,11 @@ export default async function Home() {
 
         <MatchesCarousel matches={matches} />
         <Subscriber />
-        <div className="flex-1" />
         <Footer />
       </div>
+      <Suspense fallback={null}>
+        <SubscriptionToast />
+      </Suspense>
     </main>
   );
 }

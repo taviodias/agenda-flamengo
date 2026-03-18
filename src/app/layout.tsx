@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { HydrateClient } from "~/trpc/server";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Agenda Flamengo - Sincronize os jogos com seu Google Calendar",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <HydrateClient>{children}</HydrateClient>
         </TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );
