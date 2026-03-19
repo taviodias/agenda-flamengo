@@ -5,11 +5,11 @@ import { syncFlamengoMatches } from "~/server/football";
 import { api } from "~/trpc/server";
 
 export async function GET(request: Request) {
-  // const authHeader = request.headers.get("authorization");
-  // if (authHeader !== `Bearer ${env.CRON_SECRET}`) {
-  //   console.warn("Tentativa de acesso não autorizada ao Cron Job.");
-  //   return new Response("Unauthorized", { status: 401 });
-  // }
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${env.CRON_SECRET}`) {
+    console.warn("Tentativa de acesso não autorizada ao Cron Job.");
+    return new Response("Unauthorized", { status: 401 });
+  }
   console.log("Cron Job autorizado. Iniciando sincronização...");
   try {
     await syncFlamengoMatches();

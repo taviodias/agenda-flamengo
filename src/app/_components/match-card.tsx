@@ -27,7 +27,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         variant === "far-right" && "opacity-40",
       )}
     >
-      {/* Competition badge */}
       <div className="mb-3 w-full text-center">
         <span
           className={cn(
@@ -39,7 +38,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         </span>
       </div>
 
-      {/* Status label */}
       {isPast && (
         <span className="text-muted-foreground mb-2 text-xs font-medium tracking-wider uppercase">
           Encerrado
@@ -58,14 +56,12 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         )
       )}
 
-      {/* Teams */}
       <div
         className={cn(
           "flex w-full flex-1 items-center justify-center",
           isPast ? "gap-3" : "gap-5",
         )}
       >
-        {/* Home team */}
         <div className="flex flex-col items-center gap-2">
           <img
             src={match.isHome ? "/flamengo.svg" : opponentShield}
@@ -82,7 +78,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
           </span>
         </div>
 
-        {/* Score or VS */}
         <div className="flex flex-col items-center">
           {isPast && match.scoreboard ? (
             <div className="flex items-center gap-2">
@@ -120,7 +115,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
           )}
         </div>
 
-        {/* Away team */}
         <div className="flex flex-col items-center gap-2">
           <img
             src={match.isHome ? opponentShield : "/flamengo.svg"}
@@ -138,7 +132,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         </div>
       </div>
 
-      {/* Match info */}
       <div className="mt-3 flex w-full flex-col items-center gap-1.5">
         <div className="text-muted-foreground flex items-center gap-1.5">
           <Calendar className={cn(isCenter ? "h-4 w-4" : "h-3 w-3")} />
@@ -160,7 +153,6 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         )}
       </div>
 
-      {/* Winner indicator for past games */}
       {isPast && match.scoreboard && (
         <WinnerIndicator scoreboard={match.scoreboard} isHome={match.isHome} />
       )}

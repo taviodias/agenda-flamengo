@@ -6,7 +6,6 @@ const variants = ["far-left", "left", "center", "right", "far-right"] as const;
 export function MatchesCarousel({ matches }: { matches: Match[] }) {
   return (
     <section className="w-full px-4 py-8">
-      {/* Desktop: 5 cards */}
       <div className="mx-auto hidden max-w-6xl items-center justify-center gap-3 lg:flex">
         {matches.map((match, index) => (
           <div
@@ -20,7 +19,6 @@ export function MatchesCarousel({ matches }: { matches: Match[] }) {
         ))}
       </div>
 
-      {/* Tablet: 3 cards */}
       <div className="mx-auto hidden max-w-2xl items-center justify-center gap-3 md:flex lg:hidden">
         {matches.slice(1, 4).map((match, index) => {
           const tabletVariants = ["left", "center", "right"] as const;
@@ -39,7 +37,6 @@ export function MatchesCarousel({ matches }: { matches: Match[] }) {
         })}
       </div>
 
-      {/* Mobile: only next game */}
       <div className="flex justify-center md:hidden">
         <div className="w-full max-w-75">
           <MatchCard match={matches[2]!} variant="center" />
