@@ -14,11 +14,25 @@ export function Footer() {
           <a
             target="_blank"
             href="https://otaviodias.dev"
-            className="text-flamengo-dark-red underline"
+            className="text-flamengo-red hover:text-flamengo-dark-red underline"
           >
             Otavio Dias Dev
           </a>
         </p>
+        <div className="flex justify-center gap-6">
+          <a
+            href="/privacy"
+            className="hover:text-flamengo-dark-red transition-colors"
+          >
+            Política de Privacidade
+          </a>
+          <a
+            href="/terms"
+            className="hover:text-flamengo-dark-red transition-colors"
+          >
+            Termos de Serviço
+          </a>
+        </div>
       </div>
     </footer>
   );

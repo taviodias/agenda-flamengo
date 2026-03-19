@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description:
     "Acompanhe todos os jogos do Flamengo e sincronize automaticamente com o seu Google Calendar. Nunca mais perca um jogo do Mengao!",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  verification: {
+    google: "QpKxKHjXV4DDoi_zzRceRycZwsOwQDs3KgGsd0t-O20",
+  },
 };
 
 export default function RootLayout({
