@@ -58,19 +58,26 @@ export function MatchCard({ match, variant }: MatchCardProps) {
 
       <div
         className={cn(
-          "flex w-full flex-1 items-center justify-center",
-          isPast ? "gap-3" : "gap-5",
+          "mt-8 flex w-full flex-1 items-start justify-center",
+          isPast ? "gap-2" : "gap-3",
         )}
       >
-        <div className="flex flex-col items-center gap-2">
-          <img
-            src={match.isHome ? "/flamengo.svg" : opponentShield}
-            alt="home logo"
-            className={cn(isCenter ? "h-16" : "h-12")}
-          />
+        <div className="flex flex-1 flex-col items-center gap-2">
+          <div
+            className={cn(
+              "flex items-center justify-center",
+              isCenter ? "h-16" : "h-12",
+            )}
+          >
+            <img
+              src={match.isHome ? "/flamengo.svg" : opponentShield}
+              alt="home logo"
+              className="max-h-full object-contain"
+            />
+          </div>
           <span
             className={cn(
-              "text-foreground max-w-20 truncate text-center font-semibold",
+              "text-foreground text-center font-semibold",
               isCenter ? "text-sm" : "text-xs",
             )}
           >
@@ -78,7 +85,12 @@ export function MatchCard({ match, variant }: MatchCardProps) {
           </span>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div
+          className={cn(
+            "flex flex-col items-center justify-center",
+            isCenter ? "h-16" : "h-12",
+          )}
+        >
           {isPast && match.scoreboard ? (
             <div className="flex items-center gap-2">
               <div className="flex flex-col items-center">
@@ -115,15 +127,22 @@ export function MatchCard({ match, variant }: MatchCardProps) {
           )}
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <img
-            src={match.isHome ? opponentShield : "/flamengo.svg"}
-            alt="away logo"
-            className={cn(isCenter ? "h-16" : "h-12")}
-          />
+        <div className="flex flex-1 flex-col items-center gap-2">
+          <div
+            className={cn(
+              "flex items-center justify-center",
+              isCenter ? "h-16" : "h-12",
+            )}
+          >
+            <img
+              src={match.isHome ? opponentShield : "/flamengo.svg"}
+              alt="away logo"
+              className="max-h-full object-contain"
+            />
+          </div>
           <span
             className={cn(
-              "text-foreground max-w-20 truncate text-center font-semibold",
+              "text-foreground text-center font-semibold",
               isCenter ? "text-sm" : "text-xs",
             )}
           >
