@@ -120,9 +120,9 @@ async function nextMatches() {
         .attr("src") ?? "";
     const opponent = isHome ? awayTeam : homeTeam;
     const matchDate = parseDate(date, time);
-    const apiId = Buffer.from(
-      `${opponent}-${matchDate.getDate()}/${matchDate.getMonth()}`,
-    ).toString("base64");
+    const apiId = Buffer.from(`${opponent}-${isHome}-${competition}`).toString(
+      "base64",
+    );
     matches.push({
       apiId,
       competition,
