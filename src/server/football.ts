@@ -168,9 +168,9 @@ async function lastTwoMatches() {
         .attr("src") ?? "";
     const opponent = isHome ? awayTeam : homeTeam;
     const matchDate = parseDate(date);
-    const apiId = Buffer.from(
-      `${opponent}-${matchDate.getDate()}/${matchDate.getMonth()}`,
-    ).toString("base64");
+    const apiId = Buffer.from(`${opponent}-${isHome}-${competition}`).toString(
+      "base64",
+    );
     matches.push({
       apiId,
       competition,

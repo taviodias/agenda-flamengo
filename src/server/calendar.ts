@@ -36,7 +36,7 @@ export async function syncUserCalendar(
       location: match.location ?? "A definir",
       description: [
         `🏆 ${match.competition}`,
-        `📍 ${match.location ?? "A definir"}`,
+        `🏟️ ${match.location ?? "A definir"}`,
         "Evento criado por Agenda Flamengo. Para mais detalhes, acesse: https://agenda-flamengo.vercel.app",
       ].join("\n"),
       start: { dateTime: startTime.toISOString() },
