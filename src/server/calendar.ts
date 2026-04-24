@@ -25,7 +25,6 @@ export async function syncUserCalendar(
 
   for (const match of matchesToSync) {
     const matchDate = match.matchDate;
-    matchDate.setHours(matchDate.getHours() + 3);
     const eventSummary = `${match.isHome ? "🏠" : "✈️"} Flamengo × ${match.opponent}`;
 
     const startTime = new Date(matchDate);
@@ -65,7 +64,9 @@ export async function syncUserCalendar(
           eventId: existingSync.googleEventId,
           requestBody: eventBody,
         });
-        console.log(`Evento atualizado para o jogo ${match.id}`);
+        console.log(
+          `Evento atualizado para o jogo ${match.id} do usuário ${subscriberId}`,
+        );
       } else {
         const response = await calendar.events.insert({
           calendarId: "primary",
@@ -81,7 +82,9 @@ export async function syncUserCalendar(
             googleEventId: newGoogleEventId,
           });
         }
-        console.log(`Novo evento criado para o jogo ${match.id}`);
+        console.log(
+          `Novo evento criado para o usuário ${subscriberId} do jogo ${match.id}`,
+        );
       }
       syncedCount++;
     } catch (error) {

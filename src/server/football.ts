@@ -1,5 +1,4 @@
 import * as cheerio from "cheerio";
-import { api } from "~/trpc/server";
 import type { Match, Scoreboard } from "~/types";
 
 const PLACAR_FLAMENGO_BASE_URL =
@@ -186,14 +185,10 @@ async function lastTwoMatches() {
   return matches;
 }
 
-export async function syncFlamengoMatches() {
-  console.log("Iniciando Sync dos jogos...");
+export async function extractFlamengoMatches() {
+  console.log("Scraping dos jogos...");
   const l2m = await lastTwoMatches();
   const nm = await nextMatches();
-  console.log("Upsert no Supabase...");
-  await api.db.upsertMatch([...l2m, ...nm]);
-  console.log("Sync dos jogos concluído!");
-  console.log("Limpando jogos antigos...");
-  await api.db.cleanOldMatches(l2m);
-  console.log("Jogos antigos removidos!");
+  console.log("Scraping concluído.");
+  return [...l2m, ...nm];
 }

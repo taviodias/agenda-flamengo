@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { env } from "~/env.js";
 import { syncUserCalendar } from "~/server/calendar";
-import { syncFlamengoMatches } from "~/server/football";
+import { extractFlamengoMatches } from "~/server/football";
 import { api } from "~/trpc/server";
 
 export async function GET(request: Request) {
@@ -12,8 +12,20 @@ export async function GET(request: Request) {
   }
   console.log("Cron Job autorizado. Iniciando sincronização...");
   try {
-    await syncFlamengoMatches();
-    const upcomingMatches = await api.db.upcomingMatches();
+    const matches = await extractFlamengoMatches();
+    const upsertedMatches = await api.db.upsertMatches(matches);
+    if (upsertedMatches.length === 0) {
+      console.log(
+        "Nenhum jogo para sincronizar. Sincronização de Calendar ignorada.",
+      );
+      return NextResponse.json({
+        success: true,
+        message: "Nenhum jogo para sincronizar.",
+      });
+    }
+    const upcomingMatches = upsertedMatches.filter(
+      (m) => m.status === "SCHEDULED",
+    );
     console.log("Atualizando Calendar dos subscribers...");
     const subscribers = await api.db.getSubscribers();
     for (const sub of subscribers) {
