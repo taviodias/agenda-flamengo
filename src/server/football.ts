@@ -190,5 +190,5 @@ export async function extractFlamengoMatches() {
   const l2m = await lastTwoMatches();
   const nm = await nextMatches();
   console.log("Scraping concluído.");
-  return [...l2m, ...nm];
+  return { l2m, nm };
 }

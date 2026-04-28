@@ -12,8 +12,11 @@ export async function GET(request: Request) {
   }
   console.log("Cron Job autorizado. Iniciando sincronização...");
   try {
-    const matches = await extractFlamengoMatches();
+    const { l2m, nm } = await extractFlamengoMatches();
+    const matches = [...l2m, ...nm];
     const upsertedMatches = await api.db.upsertMatches(matches);
+    console.log("Sanitizando jogos antigos...");
+    await api.db.cleanOldMatches(l2m);
     if (upsertedMatches.length === 0) {
       console.log(
         "Nenhum jogo para sincronizar. Sincronização de Calendar ignorada.",
