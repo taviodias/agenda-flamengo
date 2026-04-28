@@ -13,6 +13,30 @@ const oauth2Client = new google.auth.OAuth2(
 
 type MatchDB = Match & { id: number };
 
+const formatToGoogleCalendarTime = (date: Date) => {
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC", // Date on DB already in GMT-3, so we format as UTC to avoid timezone shifts
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(date);
+  const p = parts.reduce(
+    (acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
+};
+
 export async function syncUserCalendar(
   userRefreshToken: string,
   subscriberId: number,
@@ -38,8 +62,14 @@ export async function syncUserCalendar(
         `🏟️ ${match.location ?? "A definir"}`,
         "Evento criado por Agenda Flamengo. Para mais detalhes, acesse: https://agenda-flamengo.vercel.app",
       ].join("\n"),
-      start: { dateTime: startTime.toISOString() },
-      end: { dateTime: endTime.toISOString() },
+      start: {
+        dateTime: formatToGoogleCalendarTime(startTime),
+        timeZone: "America/Sao_Paulo",
+      },
+      end: {
+        dateTime: formatToGoogleCalendarTime(endTime),
+        timeZone: "America/Sao_Paulo",
+      },
       colorId: "11",
       reminders: {
         useDefault: false,
