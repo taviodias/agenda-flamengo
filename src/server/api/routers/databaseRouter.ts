@@ -3,7 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { MatchSchema } from "../validations";
 import { db } from "~/server/db";
 import { matches, subscribers } from "~/server/db/schema";
-import { and, asc, eq, inArray, notInArray, sql } from "drizzle-orm";
+import { and, asc, eq, ne, inArray, notInArray, sql } from "drizzle-orm";
 
 export const database = createTRPCRouter({
   upsertMatches: publicProcedure
@@ -28,7 +28,9 @@ export const database = createTRPCRouter({
           }
 
           const isMatchDateSame =
-            existing.match_date.getTime() === match.matchDate.getTime();
+            existing.status === "SUSPENDED"
+              ? true
+              : existing.match_date.getTime() === match.matchDate.getTime();
           const isStatusSame = existing.status === match.status;
           const isLocationSame = existing.location === match.location;
           const isScoreboardSame =
@@ -49,7 +51,7 @@ export const database = createTRPCRouter({
           opponent: match.opponent,
           opponent_shield: match.opponentShield,
           is_home: match.isHome,
-          status: match.status as "SCHEDULED" | "FINISHED",
+          status: match.status as "SCHEDULED" | "FINISHED" | "SUSPENDED",
           scoreboard: match.scoreboard,
           location: match.location,
         }));
@@ -64,7 +66,10 @@ export const database = createTRPCRouter({
         .onConflictDoUpdate({
           target: matches.api_id,
           set: {
-            match_date: sql`excluded.match_date`,
+            match_date: sql`CASE 
+              WHEN excluded.status = 'SUSPENDED' THEN ${matches.match_date} 
+              ELSE excluded.match_date 
+              END`,
             status: sql`excluded.status`,
             scoreboard: sql`excluded.scoreboard`,
             location: sql`excluded.location`,
@@ -135,8 +140,9 @@ export const database = createTRPCRouter({
         location: matches.location,
       })
       .from(matches)
-      .where(eq(matches.status, "FINISHED"))
-      .orderBy(asc(matches.match_date));
+      .where(ne(matches.status, "SCHEDULED"))
+      .orderBy(asc(matches.match_date))
+      .limit(2);
     const nextMatches = await db
       .select({
         apiId: matches.api_id,

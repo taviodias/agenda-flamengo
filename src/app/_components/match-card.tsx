@@ -10,7 +10,8 @@ interface MatchCardProps {
 
 export function MatchCard({ match, variant }: MatchCardProps) {
   const isCenter = variant === "center";
-  const isPast = match.status === "FINISHED";
+  const isPast = match.status !== "SCHEDULED";
+  const isSuspended = match.status === "SUSPENDED";
   const { day, time } = formatDate(match.matchDate);
   const opponentShield = match.opponentShield ?? "/no_shield.png";
 
@@ -39,8 +40,13 @@ export function MatchCard({ match, variant }: MatchCardProps) {
       </div>
 
       {isPast && (
-        <span className="text-muted-foreground mb-2 text-xs font-medium tracking-wider uppercase">
-          Encerrado
+        <span
+          className={cn(
+            "mb-2 text-xs font-medium tracking-wider uppercase",
+            isSuspended ? "text-flamengo-dark-red" : "text-muted-foreground",
+          )}
+        >
+          {isSuspended ? "Suspenso" : "Encerrado"}
         </span>
       )}
       {isCenter ? (
@@ -172,7 +178,7 @@ export function MatchCard({ match, variant }: MatchCardProps) {
         )}
       </div>
 
-      {isPast && match.scoreboard && (
+      {!isSuspended && isPast && match.scoreboard && (
         <WinnerIndicator scoreboard={match.scoreboard} isHome={match.isHome} />
       )}
     </div>

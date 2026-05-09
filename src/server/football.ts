@@ -157,6 +157,10 @@ async function lastTwoMatches() {
     }
     const scoreboard = parseScoreboard(goals.map(Number));
     const date = $match.find(".match__lg_card--date").text();
+    const suspended =
+      !date &&
+      $match.find(".match__lg_card--status").text().trim().toLowerCase() ===
+        "suspenso";
     const competition = $match.find(".match__lg_card--league").text();
     const homeTeam = $match.find(".match__lg_card--ht-name").text();
     const awayTeam = $match.find(".match__lg_card--at-name").text();
@@ -166,7 +170,7 @@ async function lastTwoMatches() {
         .find(`.match__lg_card--${isHome ? "at" : "ht"}-logo img`)
         .attr("src") ?? "";
     const opponent = isHome ? awayTeam : homeTeam;
-    const matchDate = parseDate(date);
+    const matchDate = suspended ? new Date(0) : parseDate(date);
     const apiId = Buffer.from(`${opponent}-${isHome}-${competition}`).toString(
       "base64",
     );
@@ -177,7 +181,7 @@ async function lastTwoMatches() {
       opponent,
       opponentShield,
       isHome,
-      status: "FINISHED",
+      status: suspended ? "SUSPENDED" : "FINISHED",
       scoreboard,
       location,
     });
