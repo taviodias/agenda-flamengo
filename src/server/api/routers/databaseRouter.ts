@@ -99,7 +99,7 @@ export const database = createTRPCRouter({
           .delete(matches)
           .where(
             and(
-              eq(matches.status, "FINISHED"),
+              ne(matches.status, "SCHEDULED"),
               notInArray(matches.api_id, idsToKeep),
             ),
           );
